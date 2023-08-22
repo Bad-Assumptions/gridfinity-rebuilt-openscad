@@ -7,7 +7,7 @@ $fs = 0.25;
 
 /* [General Settings] */
 // Which part would you like to see?
-part = "pens"; // [base:Base only,pens]
+part = "pens"; // [base:Base only,pens,all:All parts,test]
 // Gridfinity of bases along x-axis
 gridx = 2;  
 // Gridfinity of bases along y-axis   
@@ -21,6 +21,7 @@ length = 42;
 pen_list=[3,2,10,12];
 angle = 45;
 pen_spacing=10;
+auto_gridx = "true"; //[true,false]
 
 /*[Hidden]*/
 // number of X Divisions
@@ -53,6 +54,10 @@ div_base_x = 0;
 div_base_y = 0; 
 
 
+function pen_width(sum = 0, index = 0) = 
+	index < len(pen_list)
+	? sum + pen_list[index] + pen_spacing + pen_width(index + 1)
+	: sum - pen_spacing;
 
 module gridfinitybase(){
 color("tomato") {
@@ -74,9 +79,16 @@ module print_part() {
     if (part=="base") {
         part_base();
     }
+    else if (part == "test") {
+        echo(pen_width());
+    } 
     else if (part == "pens") {
         part_pens();
-    }
+    } 
+    else if (part == "all") {
+        part_pens();
+        part_base();
+    } 
 }
 
 
